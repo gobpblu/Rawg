@@ -1,6 +1,6 @@
 package com.developer.android.rawg.common
 
-import com.developer.android.rawg.main.api.RickAndMortyApi
+import com.developer.android.rawg.main.api.RawgApi
 import com.developer.android.rawg.utils.Utils
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -17,11 +17,11 @@ object CommonModule {
                 .addInterceptor(interceptor)
                 .build()
             val retrofit = Retrofit.Builder()
-                .baseUrl(Utils.baseUrl)
+                .baseUrl(Utils.BASE_URL)
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
-            retrofit.create(RickAndMortyApi::class.java)
+            retrofit.create(RawgApi::class.java)
         }
     }
 }

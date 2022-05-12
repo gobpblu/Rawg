@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textViewRpgTitle"
+        style="@style/genreTitle"
+        android:text="@string/title_rpg"
+        app:layout_constraintBottom_toTopOf="@id/recyclerViewRpg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewRpg"
+        style="@style/recyclerViewGenreGames"
+        android:layout_marginVertical="4dp"
+        app:layout_constraintBottom_toTopOf="@id/textViewAdventureTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewRpgTitle" />
+
+    <TextView
+        android:id="@+id/textViewAdventureTitle"
+        style="@style/genreTitle"
+        android:text="@string/title_adventure"
+        app:layout_constraintBottom_toTopOf="@id/recyclerViewAdventure"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recyclerViewRpg" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewAdventure"
+        style="@style/recyclerViewGenreGames"
+        app:layout_constraintBottom_toTopOf="@id/textViewSportsTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewAdventureTitle" />
+
+    <TextView
+        android:id="@+id/textViewSportsTitle"
+        style="@style/genreTitle"
+        android:text="@string/title_sports"
+        app:layout_constraintBottom_toTopOf="@id/recyclerViewSports"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recyclerViewAdventure" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewSports"
+        style="@style/recyclerViewGenreGames"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewSportsTitle" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
