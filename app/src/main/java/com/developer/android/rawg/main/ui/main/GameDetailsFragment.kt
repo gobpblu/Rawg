@@ -1,9 +1,8 @@
-package com.developer.android.rawg.main.ui
+package com.developer.android.rawg.main.ui.main
 
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,12 +13,14 @@ import com.developer.android.rawg.R
 import com.developer.android.rawg.common.mvp.BaseFragment
 import com.developer.android.rawg.databinding.FragmentGameDetailsBinding
 import com.developer.android.rawg.main.model.GameDetails
+import com.developer.android.rawg.main.model.GameTypes
+import com.developer.android.rawg.main.ui.main.adapter.ScreenshotsAdapter
 
 private const val ARG1_GAME = "game"
 
 
 class GameDetailsFragment : BaseFragment(R.layout.fragment_game_details) {
-    private var gameDetails: GameDetails? = null
+    private var gameDetails: GameTypes.FullGame? = null
 
     private lateinit var binding: FragmentGameDetailsBinding
 
@@ -95,9 +96,14 @@ class GameDetailsFragment : BaseFragment(R.layout.fragment_game_details) {
         drawable.setStroke(1, metaCriticColor)
     }
 
+    override fun onDetach() {
+        super.onDetach()
+        view?.let { context?.let { it1 -> Glide.with(it1).clear(it) } }
+    }
+
     companion object {
         @JvmStatic
-        fun newInstance(game: GameDetails) =
+        fun newInstance(game: GameTypes) =
             GameDetailsFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(ARG1_GAME, game)

@@ -1,18 +1,21 @@
-package com.developer.android.rawg.main.ui
+package com.developer.android.rawg.main.ui.main
 
+import androidx.recyclerview.widget.RecyclerView
 import com.developer.android.rawg.common.mvp.BaseFragmentContract
 import com.developer.android.rawg.common.mvp.MvpPresenter
 import com.developer.android.rawg.common.mvp.MvpView
-import com.developer.android.rawg.main.api.model.GamesResponse
 import com.developer.android.rawg.main.model.GameDetails
+import com.developer.android.rawg.main.model.GameTypes
 import com.developer.android.rawg.main.model.Games
+import com.developer.android.rawg.main.ui.main.adapter.MainAdapter
 
 
 interface MainContract : BaseFragmentContract {
 
     interface View : MvpView {
         fun showGames(games: Games, adapter: MainAdapter)
-        fun showGameDetails(gameDetails: GameDetails)
+
+        fun showGameDetails(gameDetails: GameTypes.FullGame)
     }
 
     interface Presenter : MvpPresenter<View> {

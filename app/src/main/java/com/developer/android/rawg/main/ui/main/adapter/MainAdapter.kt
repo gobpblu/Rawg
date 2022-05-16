@@ -1,4 +1,4 @@
-package com.developer.android.rawg.main.ui
+package com.developer.android.rawg.main.ui.main.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -12,16 +12,18 @@ import com.bumptech.glide.Glide
 import com.developer.android.rawg.R
 import com.developer.android.rawg.main.model.Games
 import com.developer.android.rawg.main.model.GameDetails
+import com.developer.android.rawg.main.model.GameTypes
 import com.developer.android.rawg.main.model.ParentPlatformContainer
+import com.developer.android.rawg.main.ui.differenttypes.adapter.FullViewHolder
 import timber.log.Timber
 
 
 class MainAdapter(
-    val onClick: (GameDetails) -> Unit,
-    val getGames: (Int) -> Unit,
+   private val onClick: (GameTypes.FullGame) -> Unit,
+   private val getGames: (Int) -> Unit
 ) : RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
 
-    private val gamesList = mutableListOf<GameDetails>()
+    private val gamesList = mutableListOf<GameTypes?>()
     private var next: String? = null
     private var page: Int = 1
 
@@ -43,7 +45,7 @@ class MainAdapter(
             itemView.findViewById(R.id.imageViewNinthIcon),
             itemView.findViewById(R.id.imageViewTenthIcon))
 
-        fun bind(game: GameDetails) {
+        fun bind(game: GameTypes.FullGame) {
             Glide.with(itemView.context).load(game.backgroundImage).into(imageViewIcon)
             textViewName.text = game.name
             textViewReleaseDate.text = buildString { append(" ").append(game.released) }
@@ -83,8 +85,8 @@ class MainAdapter(
     }
 
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
-        val listItem = gamesList[position]
-        holder.bind(listItem)
+        val game = gamesList[position]
+        holder.bind(game as GameTypes.FullGame)
         val anim: Animation =
             AnimationUtils.loadAnimation(holder.itemView.context, R.anim.all_games_animation)
         holder.itemView.startAnimation(anim)
@@ -95,7 +97,6 @@ class MainAdapter(
 
     fun addData(games: Games) {
         gamesList.addAll(games.games)
-        Timber.i(gamesList.toString())
         next = games.next
         notifyDataSetChanged()
     }

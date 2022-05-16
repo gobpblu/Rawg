@@ -1,4 +1,4 @@
-package com.developer.android.rawg.main.ui
+package com.developer.android.rawg.main.ui.main.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.developer.android.rawg.R
 import com.developer.android.rawg.main.model.GameDetails
+import com.developer.android.rawg.main.model.GameTypes
 import com.developer.android.rawg.main.model.ShortScreenshot
 
 class ScreenshotsAdapter(): RecyclerView.Adapter<ScreenshotsAdapter.ScreenshotsViewHolder>() {
@@ -24,12 +25,12 @@ class ScreenshotsAdapter(): RecyclerView.Adapter<ScreenshotsAdapter.ScreenshotsV
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
-    ): ScreenshotsAdapter.ScreenshotsViewHolder {
+    ): ScreenshotsViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.screenshot_item, parent, false)
         return ScreenshotsViewHolder(itemView)
     }
 
-    override fun onBindViewHolder(holder: ScreenshotsAdapter.ScreenshotsViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ScreenshotsViewHolder, position: Int) {
         val screenshot = screenshotsList[position]
         holder.bind(screenshot)
     }
@@ -37,7 +38,7 @@ class ScreenshotsAdapter(): RecyclerView.Adapter<ScreenshotsAdapter.ScreenshotsV
     override fun getItemCount() = screenshotsList.size
 
 
-    fun addData(game: GameDetails) {
+    fun addData(game: GameTypes.FullGame) {
         screenshotsList.addAll(game.shortScreenshots)
         notifyDataSetChanged()
     }

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:backgroundTint="@color/cardViewGenreGamesBackgroundTint"
-    tools:context=".main.ui.GameDetailsFragment">
+    tools:context=".main.ui.main.GameDetailsFragment">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardViewImageIcon"

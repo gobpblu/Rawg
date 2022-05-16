@@ -1,4 +1,4 @@
-package com.developer.android.rawg.main.ui
+package com.developer.android.rawg.main.ui.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,9 @@ import com.developer.android.rawg.R
 import com.developer.android.rawg.common.mvp.BaseFragmentMvp
 import com.developer.android.rawg.databinding.FragmentAllGamesBinding
 import com.developer.android.rawg.main.model.GameDetails
+import com.developer.android.rawg.main.model.GameTypes
 import com.developer.android.rawg.main.model.Games
+import com.developer.android.rawg.main.ui.main.adapter.MainAdapter
 import org.koin.android.ext.android.inject
 
 class AllGamesFragment :
@@ -70,8 +72,8 @@ class AllGamesFragment :
         adapter.addData(games)
     }
 
-    override fun showGameDetails(gameDetails: GameDetails) {
+    override fun showGameDetails(gameDetails: GameTypes.FullGame) {
         val fragment = GameDetailsFragment.newInstance(gameDetails)
-        changeFragment(fragment, R.id.fragment_container)
+        changeFragment(fragment, R.id.fragmentContainer)
     }
 }

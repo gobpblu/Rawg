@@ -8,7 +8,7 @@ data class Games(
     val count: Int,
     val next: String?,
     val previous: String?,
-    val games: List<GameDetails>
+    val games: List<GameTypes?>
     /*@SerializedName("seo_title")
     val seoTitle: String,
     @SerializedName("seo_description")
