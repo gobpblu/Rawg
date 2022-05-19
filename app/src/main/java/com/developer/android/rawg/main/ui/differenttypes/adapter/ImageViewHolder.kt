@@ -13,7 +13,7 @@ class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
 
     fun bind(game: GameTypes.ImageGame) {
-        Glide.with(itemView.context).load(game.backgroundImage).into(imageViewIcon)
+        Glide.with(itemView.context).load(game.backgroundImage).placeholder(R.drawable.abstract_game).into(imageViewIcon)
     }
 
 }

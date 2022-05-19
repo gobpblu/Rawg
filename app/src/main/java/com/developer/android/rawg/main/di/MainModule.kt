@@ -15,6 +15,7 @@ import org.koin.dsl.module
 object MainModule {
     fun create() = module {
         singleOf(::MainPresenter) bind MainContract.Presenter::class
+//        single { (MainPresenter(get())) } bind MainContract.Presenter::class
         factoryOf(::MainInteractor)
         singleOf(::MainRemoteRepository)
         singleOf(::DifferentTypesPresenter) bind DifferentTypesContract.Presenter::class

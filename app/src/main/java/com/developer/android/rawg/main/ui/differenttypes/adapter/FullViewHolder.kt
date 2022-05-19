@@ -28,7 +28,7 @@ class FullViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         itemView.findViewById(R.id.imageViewTenthIcon))
 
     fun bind(game: GameTypes.FullGame) {
-        Glide.with(itemView.context).load(game.backgroundImage).into(imageViewIcon)
+        Glide.with(itemView.context).load(game.backgroundImage).placeholder(R.drawable.abstract_game).into(imageViewIcon)
         textViewName.text = game.name
         textViewReleaseDate.text = buildString { append(" ").append(game.released) }
         textViewPlaytime.text = buildString { append(" ").append(game.playTime).append(" hours") }

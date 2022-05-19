@@ -26,9 +26,9 @@ class DifferentTypesAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val itemView = LayoutInflater.from(parent.context)
         return when (viewType) {
-            GAME_INFO_FULL -> FullViewHolder(itemView.inflate(R.layout.game_item_full, parent, false))
-            GAME_INFO_IMAGE -> ImageViewHolder(itemView.inflate(R.layout.game_item_image, parent, false))
-            GAME_INFO_DESCRIPTION -> DescriptionViewHolder(itemView.inflate(R.layout.game_item_description, parent, false))
+            R.layout.game_item_full -> FullViewHolder(itemView.inflate(R.layout.game_item_full, parent, false))
+            R.layout.game_item_image -> ImageViewHolder(itemView.inflate(R.layout.game_item_image, parent, false))
+            R.layout.game_item_description -> DescriptionViewHolder(itemView.inflate(R.layout.game_item_description, parent, false))
             else -> throw IllegalStateException("Something went wrong")
         }
 
@@ -51,7 +51,13 @@ class DifferentTypesAdapter(
     override fun getItemCount() = gamesList.size
 
     override fun getItemViewType(position: Int): Int {
-        return gamesList[position]?.type ?: 2
+        return when(gamesList[position]) {
+            is GameTypes.FullGame -> R.layout.game_item_full
+            is GameTypes.ImageGame -> R.layout.game_item_image
+            is GameTypes.DescriptionGame -> R.layout.game_item_description
+            else -> {throw IllegalStateException("Type not found")}
+        }
+
     }
 
     override fun onViewRecycled(holder: RecyclerView.ViewHolder) {

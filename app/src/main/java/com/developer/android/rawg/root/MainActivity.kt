@@ -1,9 +1,10 @@
-package com.developer.android.rawg.main.ui.main
+package com.developer.android.rawg.root
 
 import android.os.Bundle
 import com.developer.android.rawg.R
 import com.developer.android.rawg.common.mvp.BaseActivity
 import com.developer.android.rawg.main.ui.differenttypes.GamesWithDifferentTypesFragment
+import com.developer.android.rawg.main.ui.main.AllGamesFragment
 
 class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

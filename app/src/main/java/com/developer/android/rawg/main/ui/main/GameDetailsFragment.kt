@@ -20,7 +20,7 @@ private const val ARG1_GAME = "game"
 
 
 class GameDetailsFragment : BaseFragment(R.layout.fragment_game_details) {
-    private var gameDetails: GameTypes.FullGame? = null
+    private lateinit var gameDetails: GameTypes
 
     private lateinit var binding: FragmentGameDetailsBinding
 
@@ -30,9 +30,7 @@ class GameDetailsFragment : BaseFragment(R.layout.fragment_game_details) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            gameDetails = it.getParcelable(ARG1_GAME)
-        }
+            gameDetails = arguments?.getParcelable(ARG1_GAME)!!
     }
 
     override fun onCreateView(
@@ -47,41 +45,55 @@ class GameDetailsFragment : BaseFragment(R.layout.fragment_game_details) {
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?): Unit = with(binding) {
         super.onViewCreated(view, savedInstanceState)
-        // image bind
-        context?.let {
-            Glide.with(it).load(gameDetails?.backgroundImage).into(imageViewDetailsIcon)
+        when (gameDetails) {
+            is GameTypes.FullGame -> fullGameBind(gameDetails as GameTypes.FullGame)
+            is GameTypes.ImageGame -> imageGameBind(gameDetails as GameTypes.ImageGame)
+            is GameTypes.DescriptionGame -> descriptionGameBind(gameDetails as GameTypes.DescriptionGame)
         }
-        // Game Name bind
-        textViewGameDetailsName.text = gameDetails?.name
-        //MetaCritic bind
-        gameDetails?.metaCritic?.let {
-            textViewMetascoreValue.text = buildString { append("$it") }
-            setMetascore(it)
+
+    }
+
+    private fun descriptionGameBind(game: GameTypes.DescriptionGame) = with(binding) {
+        binding.textViewGameDetailsName.text = game.name
+        textViewReleaseDateValue.text = game.released
+        textViewPlatformValues.text = buildString {
+            game.parentPlatforms.forEachIndexed { index, platform ->
+                append(platform.parentPlatform.name)
+                if (index != game.parentPlatforms.lastIndex) append(", ")
+            }
         }
+        textViewPlaytimeValue.text = buildString { append(game.playTime).append("h") }
+    }
+
+    private fun imageGameBind(game: GameTypes.ImageGame) {
+        context?.let { Glide.with(it).load(game.backgroundImage).placeholder(R.drawable.abstract_game).into(binding.imageViewDetailsIcon) }
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun fullGameBind(game: GameTypes.FullGame) = with(binding) {
+        context?.let { Glide.with(it).load(game.backgroundImage).placeholder(R.drawable.abstract_game).into(binding.imageViewDetailsIcon) }
+        binding.textViewGameDetailsName.text = game.name
+        textViewMetascoreValue.text = buildString { append("${game.metaCritic}") }
+        setMetascore(game.metaCritic)
         recyclerViewScreenshots.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerViewScreenshots.adapter = screenshotsAdapter
-        gameDetails?.let { game ->
-            // Screenshots bind
-            screenshotsAdapter.addData(game)
-            // Release date bind
-            textViewReleaseDateValue.text = game.released
-            // Updated bind
-            textViewUpdatedValue.text = game.updated.substring(0, 10)
-            // ratingBar bind
-            ratingBar.apply {
-                rating = game.rating
-            }
-            // playtime bind
-            textViewPlaytimeValue.text = buildString { append(game.playTime).append("h") }
-            textViewPlatformValues.text = buildString {
-                game.parentPlatforms.forEachIndexed { index, platform ->
-                    append(platform.parentPlatform.name)
-                    if (index != game.parentPlatforms.lastIndex) append(", ")
-                }
+        screenshotsAdapter.addData(game)
+        textViewReleaseDateValue.text = game.released
+        textViewUpdatedValue.text = game.updated.substring(0, 10)
+        ratingBar.apply {
+            rating = game.rating
+        }
+        textViewPlatformValues.text = buildString {
+            game.parentPlatforms.forEachIndexed { index, platform ->
+                append(platform.parentPlatform.name)
+                if (index != game.parentPlatforms.lastIndex) append(", ")
             }
         }
+        textViewPlaytimeValue.text = buildString { append(game.playTime).append("h") }
     }
+
 
     @RequiresApi(Build.VERSION_CODES.M)
     private fun setMetascore(metaCritic: Int) = with(binding) {

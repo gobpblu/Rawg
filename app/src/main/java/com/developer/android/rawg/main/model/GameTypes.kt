@@ -8,7 +8,7 @@ sealed class GameTypes : Parcelable {
     @Parcelize
     data class FullGame(
         val name: String,
-        val released: String,
+        val released: String?,
         val backgroundImage: String?,
         val rating: Float,
         val metaCritic: Int,
