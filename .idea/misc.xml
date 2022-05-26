@@ -26,7 +26,7 @@
         <entry key="..\:/Projects/IT Academy/RAWG/app/src/main/res/drawable/xbox_icon.xml" value="0.13" />
         <entry key="..\:/Projects/IT Academy/RAWG/app/src/main/res/layout/activity_main.xml" value="0.1734375" />
         <entry key="..\:/Projects/IT Academy/RAWG/app/src/main/res/layout/all_games.xml" value="0.11574074074074074" />
-        <entry key="..\:/Projects/IT Academy/RAWG/app/src/main/res/layout/fragment_all_games.xml" value="0.16" />
+        <entry key="..\:/Projects/IT Academy/RAWG/app/src/main/res/layout/fragment_all_games.xml" value="0.1" />
         <entry key="..\:/Projects/IT Academy/RAWG/app/src/main/res/layout/fragment_game_details.xml" value="0.25" />
         <entry key="..\:/Projects/IT Academy/RAWG/app/src/main/res/layout/fragment_games_with_different_types.xml" value="0.25" />
         <entry key="..\:/Projects/IT Academy/RAWG/app/src/main/res/layout/game_details_copy.xml" value="0.2" />
@@ -36,6 +36,7 @@
         <entry key="..\:/Projects/IT Academy/RAWG/app/src/main/res/layout/game_item_full.xml" value="0.21" />
         <entry key="..\:/Projects/IT Academy/RAWG/app/src/main/res/layout/game_item_image.xml" value="0.16927083333333334" />
         <entry key="..\:/Projects/IT Academy/RAWG/app/src/main/res/layout/item.xml" value="0.33" />
+        <entry key="..\:/Projects/IT Academy/RAWG/app/src/main/res/layout/progress_bar.xml" value="0.16927083333333334" />
         <entry key="..\:/Projects/IT Academy/RAWG/app/src/main/res/layout/screenshot.xml" value="0.11574074074074074" />
         <entry key="..\:/Projects/IT Academy/RAWG/app/src/main/res/layout/screenshot_item.xml" value="0.1" />
       </map>

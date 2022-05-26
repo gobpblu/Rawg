@@ -16,4 +16,6 @@ class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         Glide.with(itemView.context).load(game.backgroundImage).placeholder(R.drawable.abstract_game).into(imageViewIcon)
     }
 
+    fun detach() = Glide.with(itemView).clear(imageViewIcon)
+
 }

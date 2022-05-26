@@ -1,5 +1,6 @@
 package com.developer.android.rawg.common.mvp
 
+import android.os.Bundle
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -15,6 +16,15 @@ abstract class BaseFragment(@LayoutRes layoutRes: Int) : Fragment(layoutRes),
 //            .hide(parentFragmentManager.findFragmentById(R.id.fragmentContainer)!!)
 //            .add(id, fragment)
             .replace(id, fragment)
+            .commit()
+    }
+
+    fun hideAndAddFragment(hideFragment: Fragment, addFragment: Fragment, id: Int) {
+        val fragmentManager = parentFragmentManager
+        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.addToBackStack(null)
+            .hide(hideFragment)
+            .add(id, addFragment)
             .commit()
     }
 

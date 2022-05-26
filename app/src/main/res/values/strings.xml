@@ -13,4 +13,5 @@
     <string name="playtime">Average playtime:</string>
     <string name="platforms">Platforms:</string>
     <string name="game_platform_image">Game platform image</string>
+    <string name="loading_error">Some loading error was happened! Check your internet connection.</string>
 </resources>

@@ -7,7 +7,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="text_color">#217C96</color>
+    <color name="text_color">#039be5</color>
     <color name="recyclerView_background">#22272F2B</color>
     <color name="cardViewGame">#201E1D</color>
     <color name="cardViewGenreGamesBackgroundTint">#141615</color>

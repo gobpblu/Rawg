@@ -1,17 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+
+        android:id="@+id/swipeRefresh"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@id/recyclerViewRpg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
     <TextView
         android:id="@+id/textViewRpgTitle"
         style="@style/genreTitle"
-        android:text="@string/title_rpg"
-        app:layout_constraintBottom_toTopOf="@id/recyclerViewRpg"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:gravity="center_horizontal"
+        android:text="@string/title_rpg" />
+
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewRpg"
@@ -20,7 +34,7 @@
         app:layout_constraintBottom_toTopOf="@id/textViewAdventureTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewRpgTitle" />
+        app:layout_constraintTop_toBottomOf="@id/swipeRefresh" />
 
     <TextView
         android:id="@+id/textViewAdventureTitle"
@@ -57,6 +71,5 @@
         app:layout_constraintTop_toBottomOf="@id/textViewSportsTitle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 

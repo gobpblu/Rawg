@@ -9,9 +9,6 @@ import com.bumptech.glide.Glide
 import com.developer.android.rawg.R
 import com.developer.android.rawg.main.model.GameTypes
 import com.developer.android.rawg.main.model.Games
-import com.developer.android.rawg.utils.Utils.GAME_INFO_DESCRIPTION
-import com.developer.android.rawg.utils.Utils.GAME_INFO_FULL
-import com.developer.android.rawg.utils.Utils.GAME_INFO_IMAGE
 
 
 class DifferentTypesAdapter(
@@ -35,13 +32,12 @@ class DifferentTypesAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val game = gamesList[position]
         when (holder) {
-            is FullViewHolder -> holder.bind(game as GameTypes.FullGame)
-            is ImageViewHolder -> holder.bind(game as GameTypes.ImageGame)
-            is DescriptionViewHolder -> holder.bind(game as GameTypes.DescriptionGame)
+            is FullViewHolder -> holder.bind(gamesList[position] as GameTypes.FullGame)
+            is ImageViewHolder -> holder.bind(gamesList[position] as GameTypes.ImageGame)
+            is DescriptionViewHolder -> holder.bind(gamesList[position] as GameTypes.DescriptionGame)
         }
-        holder.itemView.setOnClickListener { game?.let { it1 -> onClick.invoke(it1) } }
+        holder.itemView.setOnClickListener { gamesList[position]?.let { it1 -> onClick.invoke(it1) } }
         val anim: Animation =
             AnimationUtils.loadAnimation(holder.itemView.context, R.anim.all_games_animation)
         holder.itemView.startAnimation(anim)
@@ -62,8 +58,8 @@ class DifferentTypesAdapter(
 
     override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
         when (holder) {
-            is FullViewHolder -> Glide.with(holder.itemView).clear(holder.imageViewIcon)
-            is ImageViewHolder -> Glide.with(holder.itemView).clear(holder.imageViewIcon)
+            is FullViewHolder -> holder.detach()
+            is ImageViewHolder -> holder.detach()
         }
     }
 

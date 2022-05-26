@@ -4,13 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.developer.android.rawg.R
 import com.developer.android.rawg.common.mvp.BaseFragmentMvp
 import com.developer.android.rawg.common.ui.recyclerview.PagingState
 import com.developer.android.rawg.databinding.FragmentAllGamesBinding
 import com.developer.android.rawg.main.model.GameTypes
-import com.developer.android.rawg.main.ui.main.adapter.MainAdapter
+import com.developer.android.rawg.main.ui.main.adapter.Int
+import com.developer.android.rawg.utils.GamesGenres
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 
@@ -18,60 +21,54 @@ class AllGamesFragment :
     BaseFragmentMvp<MainContract.View, MainContract.Presenter>(R.layout.fragment_all_games),
     MainContract.View {
 
-    private val adapterRpg: MainAdapter by lazy {
-        MainAdapter(onClick = { showGameDetails(it) })
-    }
-    private val adapterAdventure: MainAdapter by lazy {
-        MainAdapter(onClick = { showGameDetails(it) })
-    }
-    private val adapterSports: MainAdapter by lazy {
-        MainAdapter(onClick = { showGameDetails(it) })
-    }
-
     override val presenter: MainContract.Presenter by inject()
 
-    private lateinit var binding: FragmentAllGamesBinding
-
-    private val linearLayoutManagerRpg by lazy {
-        LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+    private val binding: FragmentAllGamesBinding by lazy {
+        FragmentAllGamesBinding.inflate(layoutInflater)
     }
 
-    private val linearLayoutManagerAdventure by lazy {
-        LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-    }
+    private val adaptersList = mutableListOf<Int>()
 
-    private val linearLayoutManagerSports by lazy {
-        LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-    }
+    private val layoutManagersList = mutableListOf<LinearLayoutManager>()
 
-    private val scrollListenerRpg by lazy {
-        MainScrollListener(layoutManager = linearLayoutManagerRpg,
-            loadNextPage = {
-                presenter.getGames(
-                    adapter = adapterRpg, page = it, genres = "role-playing-games-rpg")
-            })
-    }
+    private val scrollListenerList = mutableListOf<MainScrollListener>()
 
-    private val scrollListenerAdventure by lazy {
-        MainScrollListener(layoutManager = linearLayoutManagerAdventure,
-            loadNextPage = {
-                presenter.getGames(
-                    adapter = adapterAdventure, page = it, genres = "adventure")
-            })
-    }
-
-    private val scrollListenerSports by lazy {
-        MainScrollListener(layoutManager = linearLayoutManagerSports,
-            loadNextPage = {
-                presenter.getGames(
-                    adapter = adapterSports, page = it, genres = "sports")
-            })
+    private val recyclersList: List<RecyclerView> by lazy {
+        with(binding) {
+            listOf(
+                recyclerViewRpg,
+                recyclerViewAdventure,
+                recyclerViewSports
+            )
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        for (i in recyclersList.indices) {
+            adaptersList.add(
+                Int(
+                    onGameItemClicked = { onGameItemClicked(it) },
+                    onFailedListener = { onFailedListener() }
+                ))
+            layoutManagersList.add(
+                LinearLayoutManager(requireContext(),
+                    LinearLayoutManager.HORIZONTAL, false)
+            )
+        }
 
+        for (i in recyclersList.indices) {
+            scrollListenerList.add(
+                MainScrollListener(layoutManager = layoutManagersList[i],
+                    loadNextPage = {
+                        presenter.getGames(
+                            adapterIndex = i,
+                            page = it,
+                            genres = GamesGenres.values()[i].genre)
+                    })
+            )
+        }
     }
 
     override fun onCreateView(
@@ -79,68 +76,68 @@ class AllGamesFragment :
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        binding = FragmentAllGamesBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(binding) {
         super.onViewCreated(view, savedInstanceState)
-        Timber.i("$savedInstanceState")
-        if (!recyclerViewRpg.isActivated) {
-                recyclerViewRpg.apply {
-                    layoutManager = linearLayoutManagerRpg
-                    adapter = adapterRpg
-                    addOnScrollListener(scrollListenerRpg)
-                }
-                recyclerViewAdventure.apply {
-                    layoutManager = linearLayoutManagerAdventure
-                    adapter = adapterAdventure
-                    addOnScrollListener(scrollListenerAdventure)
-                }
-                recyclerViewSports.apply {
-                    layoutManager = linearLayoutManagerSports
-                    adapter = adapterSports
-                    addOnScrollListener(scrollListenerSports)
-                }
-            presenter.getGames(adapterRpg, genres = "role-playing-games-rpg")
-            presenter.getGames(adapterAdventure, genres = "adventure")
-            presenter.getGames(adapterSports, genres = "sports")
+        Timber.i("${getView()}")
+        recyclersList.forEachIndexed { index, recycler ->
+            recycler.apply {
+                layoutManager = layoutManagersList[index]
+                adapter = adaptersList[index]
+                addOnScrollListener(scrollListenerList[index])
+            }
         }
 
+        swipeRefresh.setDistanceToTriggerSync(5)
+        swipeRefresh.setProgressViewEndTarget(false, 50)
+        swipeRefresh.setOnRefreshListener {
+            for (index in adaptersList.indices) {
+                adaptersList[index].clearItems()
+                presenter.refresh(index, genres = GamesGenres.values()[index].genre)
+            }
+        }
+        for (index in adaptersList.indices)
+            presenter.getGames(adapterIndex = index, genres = GamesGenres.values()[index].genre)
+
     }
 
-    override fun showGames(games: List<GameTypes?>, adapter: MainAdapter) {
-        adapter.addData(games)
+    override fun showGames(games: List<GameTypes?>, adapterIndex: kotlin.Int) {
+        adaptersList[adapterIndex].setItems(games)
     }
 
-    override fun showGameDetails(gameDetails: GameTypes.FullGame) {
+    private fun onGameItemClicked(gameDetails: GameTypes.FullGame) {
         val fragment = GameDetailsFragment.newInstance(gameDetails)
-        changeFragment(fragment, R.id.fragmentContainer)
+        parentFragmentManager.findFragmentById(R.id.fragmentContainer)?.let {
+            hideAndAddFragment(hideFragment = it,
+                addFragment = fragment,
+                id = R.id.fragmentContainer)
+        }
     }
 
-    override fun showPagingState(state: PagingState) {
+    private fun onFailedListener() {
+        Toast.makeText(context, R.string.loading_error, Toast.LENGTH_SHORT)
+            .show()
+    }
 
+    override fun showPagingState(adapterIndex: kotlin.Int, state: PagingState) {
+        adaptersList[adapterIndex].setPagingState(state)
+    }
+
+    override fun showRefreshing(isRefreshing: Boolean) {
+        binding.swipeRefresh.isRefreshing = isRefreshing
+    }
+
+    override fun showErrorMessage(e: Throwable) {
+        Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
     }
 
     override fun onDestroyView() = with(binding) {
         super.onDestroyView()
-        recyclerViewRpg.apply {
-            layoutManager = null
-            adapter = null
+        for (i in 1..3) {
+            recyclersList[i].removeOnScrollListener(scrollListenerList[i])
         }
-        recyclerViewAdventure.apply {
-            layoutManager = null
-            adapter = null
-        }
-        recyclerViewSports.apply {
-            layoutManager = null
-            adapter = null
-        }
-        Timber.i("onDestroyView()")
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        Timber.i("onDestroy()")
-    }
 }

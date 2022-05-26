@@ -7,9 +7,9 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.developer.android.rawg.R
-import com.developer.android.rawg.main.model.GameDetails
 import com.developer.android.rawg.main.model.GameTypes
 import com.developer.android.rawg.main.model.ShortScreenshot
+import kotlin.Int
 
 class ScreenshotsAdapter(): RecyclerView.Adapter<ScreenshotsAdapter.ScreenshotsViewHolder>() {
     private val screenshotsList = mutableListOf<ShortScreenshot>()
@@ -18,7 +18,8 @@ class ScreenshotsAdapter(): RecyclerView.Adapter<ScreenshotsAdapter.ScreenshotsV
        private val imageViewScreenshot: ImageView = itemView.findViewById(R.id.imageViewScreenshot)
 
        fun bind(screenshot: ShortScreenshot) {
-           Glide.with(itemView.context).load(screenshot.image).into(imageViewScreenshot)
+           Glide.with(itemView.context).load(screenshot.image)
+               .placeholder(R.drawable.abstract_game).into(imageViewScreenshot)
        }
     }
 

@@ -35,15 +35,21 @@ class MainViewHolder(
         binding.imageViewTenthIcon)
 
 
-    fun bind(game: GameTypes.FullGame) = with(binding) {
-        Glide.with(itemView.context).load(game.backgroundImage)
-            .placeholder(R.drawable.abstract_game).into(imageViewIcon)
-        textViewName.text = game.name
-        textViewItemReleaseDate.text = buildString { append(" ").append(game.released) }
-        textViewItemPlaytime.text =
-            buildString { append(" ").append(game.playTime).append(" hours") }
-        parentsBind(game.parentPlatforms)
-        itemView.setOnClickListener { onGameItemClicked.invoke(game) }
+    fun bind(item: GameTypes.FullGame){
+        with(binding) {
+            Glide.with(itemView.context).load(item.backgroundImage)
+                .placeholder(R.drawable.abstract_game).into(imageViewIcon)
+            textViewName.text = item.name
+            textViewItemReleaseDate.text = buildString { append(" ").append(item.released) }
+            textViewItemPlaytime.text =
+                buildString { append(" ").append(item.playTime).append(" hours") }
+            parentsBind(item.parentPlatforms)
+            itemView.setOnClickListener { onGameItemClicked.invoke(item) }
+        }
+    }
+
+    fun detach() {
+        Glide.with(itemView).clear(binding.imageViewIcon)
     }
 
     private fun parentsBind(parentPlatforms: List<ParentPlatformContainer>) = with(binding) {

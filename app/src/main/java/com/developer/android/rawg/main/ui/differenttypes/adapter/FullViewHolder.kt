@@ -59,4 +59,6 @@ class FullViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             i++
         }
     }
+
+    fun detach() = Glide.with(itemView).clear(imageViewIcon)
 }

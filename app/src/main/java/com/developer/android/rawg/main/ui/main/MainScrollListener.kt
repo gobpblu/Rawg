@@ -21,12 +21,6 @@ class MainScrollListener(
         val totalItems = layoutManager.itemCount
         val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
 
-        Timber.tag("***").i("visibleItems: $visibleItems\n" +
-                "totalItems: $totalItems" +
-                "\n$firstVisibleItemPosition   " +
-                "isLoading: $isLoading" + "\n" +
-                "totalLoadedItems: $totalLoadedItems")
-
         if (totalItems == visibleItems) return
 
         if (totalItems > totalLoadedItems) {
